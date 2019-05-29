@@ -23,7 +23,7 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"glesys_loadbalancer":   resourceGlesysLoadbalancer(),
+			"glesys_loadbalancer":   resourceGlesysLoadBalancer(),
 			"glesys_network":        resourceGlesysNetwork(),
 			"glesys_networkadapter": resourceGlesysNetworkAdapter(),
 			"glesys_server":         resourceGlesysServer(),
