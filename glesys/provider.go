@@ -23,10 +23,11 @@ func Provider() terraform.ResourceProvider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"glesys_loadbalancer":   resourceGlesysLoadBalancer(),
-			"glesys_network":        resourceGlesysNetwork(),
-			"glesys_networkadapter": resourceGlesysNetworkAdapter(),
-			"glesys_server":         resourceGlesysServer(),
+			"glesys_loadbalancer":          resourceGlesysLoadBalancer(),
+			"glesys_loadbalancer_frontend": resourceGlesysLoadBalancerFrontend(),
+			"glesys_network":               resourceGlesysNetwork(),
+			"glesys_networkadapter":        resourceGlesysNetworkAdapter(),
+			"glesys_server":                resourceGlesysServer(),
 		},
 		// this will be used to configure the client to communicate with the API
 		ConfigureFunc: providerConfigure,
