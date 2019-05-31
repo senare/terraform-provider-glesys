@@ -26,6 +26,7 @@ func Provider() terraform.ResourceProvider {
 			"glesys_loadbalancer":          resourceGlesysLoadBalancer(),
 			"glesys_loadbalancer_backend":  resourceGlesysLoadBalancerBackend(),
 			"glesys_loadbalancer_frontend": resourceGlesysLoadBalancerFrontend(),
+			"glesys_loadbalancer_target":   resourceGlesysLoadBalancerTarget(),
 			"glesys_network":               resourceGlesysNetwork(),
 			"glesys_networkadapter":        resourceGlesysNetworkAdapter(),
 			"glesys_server":                resourceGlesysServer(),
