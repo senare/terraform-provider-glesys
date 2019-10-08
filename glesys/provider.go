@@ -24,6 +24,7 @@ func Provider() terraform.ResourceProvider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"glesys_domain":                resourceGlesysDomain(),
+			"glesys_domain_record":         resourceGlesysDomainRecord(),
 			"glesys_loadbalancer":          resourceGlesysLoadBalancer(),
 			"glesys_loadbalancer_backend":  resourceGlesysLoadBalancerBackend(),
 			"glesys_loadbalancer_frontend": resourceGlesysLoadBalancerFrontend(),
