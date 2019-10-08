@@ -8,3 +8,5 @@ require (
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 )
+
+replace github.com/glesys/glesys-go => /home/andreas/koda/gocode_glesys/glesys-go
