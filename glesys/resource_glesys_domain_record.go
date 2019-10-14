@@ -3,7 +3,6 @@ package glesys
 import (
 	"context"
 	"fmt"
-	"log"
 	"strconv"
 
 	"github.com/glesys/glesys-go"
@@ -93,17 +92,8 @@ func resourceGlesysDomainRecordRead(d *schema.ResourceData, m interface{}) error
 		return nil
 	}
 
-	//recordID, err1 := strconv.Atoi(myId)
-	//if err1 != nil {
-	//	return fmt.Errorf("Id must be converted to integer: %v", err1)
-	//}
-
-	//log.Printf("RecordID=%d\n", recordID)
-	log.Printf("RecordID=%d\n", myId)
 	for _, record := range *records {
-		//if record.RecordID == recordID {
 		if record.RecordID == myId {
-			//log.Printf("[INFO] Found record-id %d.", recordID)
 			d.Set("domain", record.DomainName)
 			d.Set("data", record.Data)
 			d.Set("host", record.Host)
