@@ -9,12 +9,12 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-func resourceGlesysDomainRecord() *schema.Resource {
+func resourceGlesysDNSDomainRecord() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceGlesysDomainRecordCreate,
-		Read:   resourceGlesysDomainRecordRead,
-		Update: resourceGlesysDomainRecordUpdate,
-		Delete: resourceGlesysDomainRecordDelete,
+		Create: resourceGlesysDNSDomainRecordCreate,
+		Read:   resourceGlesysDNSDomainRecordRead,
+		Update: resourceGlesysDNSDomainRecordUpdate,
+		Delete: resourceGlesysDNSDomainRecordDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -56,7 +56,7 @@ func resourceGlesysDomainRecord() *schema.Resource {
 	}
 }
 
-func resourceGlesysDomainRecordCreate(d *schema.ResourceData, m interface{}) error {
+func resourceGlesysDNSDomainRecordCreate(d *schema.ResourceData, m interface{}) error {
 	client := m.(*glesys.Client)
 
 	params := glesys.AddRecordParams{
@@ -67,7 +67,7 @@ func resourceGlesysDomainRecordCreate(d *schema.ResourceData, m interface{}) err
 		TTL:        d.Get("ttl").(int),
 	}
 
-	record, err := client.Domains.AddRecord(context.Background(), params)
+	record, err := client.DNSDomains.AddRecord(context.Background(), params)
 	if err != nil {
 		return fmt.Errorf("Error adding record \"%s\": %v", params.Data, err)
 	}
@@ -76,15 +76,15 @@ func resourceGlesysDomainRecordCreate(d *schema.ResourceData, m interface{}) err
 	id := strconv.Itoa(record.RecordID)
 	d.SetId(id)
 
-	return resourceGlesysDomainRecordRead(d, m)
+	return resourceGlesysDNSDomainRecordRead(d, m)
 }
 
-func resourceGlesysDomainRecordRead(d *schema.ResourceData, m interface{}) error {
+func resourceGlesysDNSDomainRecordRead(d *schema.ResourceData, m interface{}) error {
 	client := m.(*glesys.Client)
 
 	domain := d.Get("domain").(string)
 	myId := d.Get("recordid").(int)
-	records, err := client.Domains.ListRecords(context.Background(), domain)
+	records, err := client.DNSDomains.ListRecords(context.Background(), domain)
 
 	if err != nil {
 		fmt.Errorf("Domain not found: %v\n", err)
@@ -105,7 +105,7 @@ func resourceGlesysDomainRecordRead(d *schema.ResourceData, m interface{}) error
 	return nil
 }
 
-func resourceGlesysDomainRecordUpdate(d *schema.ResourceData, m interface{}) error {
+func resourceGlesysDNSDomainRecordUpdate(d *schema.ResourceData, m interface{}) error {
 	client := m.(*glesys.Client)
 
 	myID := d.Id()
@@ -131,15 +131,15 @@ func resourceGlesysDomainRecordUpdate(d *schema.ResourceData, m interface{}) err
 		params.Type = d.Get("type").(string)
 	}
 
-	_, err := client.Domains.UpdateRecord(context.Background(), params)
+	_, err := client.DNSDomains.UpdateRecord(context.Background(), params)
 	if err != nil {
 		return fmt.Errorf("Error updating record: %v", err)
 	}
 
-	return resourceGlesysDomainRecordRead(d, m)
+	return resourceGlesysDNSDomainRecordRead(d, m)
 }
 
-func resourceGlesysDomainRecordDelete(d *schema.ResourceData, m interface{}) error {
+func resourceGlesysDNSDomainRecordDelete(d *schema.ResourceData, m interface{}) error {
 	client := m.(*glesys.Client)
 
 	recordID, errid := strconv.Atoi(d.Id())
@@ -147,7 +147,7 @@ func resourceGlesysDomainRecordDelete(d *schema.ResourceData, m interface{}) err
 		return fmt.Errorf("Id must be converted to integer: %v", errid)
 	}
 
-	err := client.Domains.DeleteRecord(context.Background(), recordID)
+	err := client.DNSDomains.DeleteRecord(context.Background(), recordID)
 	if err != nil {
 		return fmt.Errorf("Error deleting domain record: %v", err)
 	}
