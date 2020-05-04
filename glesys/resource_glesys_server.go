@@ -3,8 +3,10 @@ package glesys
 import (
 	"context"
 	"fmt"
+	"net"
+	"strings"
 
-	"github.com/glesys/glesys-go"
+	"github.com/glesys/glesys-go/v2"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -102,6 +104,12 @@ func buildServerParamStruct(d *schema.ResourceData) *glesys.CreateServerParams {
 	return &opts
 }
 
+// checkIPversion - check if IP is IPv4 or not.
+func checkIPversion(Address string) bool {
+	ipAddr := net.ParseIP(Address)
+	return ipAddr != nil && strings.Contains(Address, ".")
+}
+
 func resourceGlesysServerCreate(d *schema.ResourceData, m interface{}) error {
 	// Setup client to the API
 	client := m.(*glesys.Client)
@@ -137,10 +145,10 @@ func resourceGlesysServerRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("description", srv.Description)
 	d.Set("hostname", srv.Hostname)
 	for i := range srv.IPList {
-		if srv.IPList[i].IsIPv4() {
+		if checkIPversion(srv.IPList[i].Address) {
 			d.Set("ipv4_address", srv.IPList[i].Address)
 		}
-		if srv.IPList[i].IsIPv6() {
+		if !checkIPversion(srv.IPList[i].Address) {
 			d.Set("ipv6_address", srv.IPList[i].Address)
 		}
 	}
